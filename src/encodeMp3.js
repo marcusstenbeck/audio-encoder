@@ -3,11 +3,6 @@ var lamejs = require('lamejs');
 var MAX_AMPLITUDE = 0x7FFF;
 
 function encodeMp3(audioBuffer, params, onProgress, cb) {
-	if (audioBuffer.sampleRate !== 44100) {
-		// TODO: generalize encoder for different sample rates
-		throw new Error('Expecting 44100 Hz sample rate');
-	}
-
 	var nChannels = audioBuffer.numberOfChannels;
 
 	if (nChannels !== 1 && nChannels !== 2) {
@@ -46,7 +41,7 @@ function encodeMp3(audioBuffer, params, onProgress, cb) {
 
 	// can be anything but make it a multiple of 576 to make encoders life easier
 	BLOCK_SIZE = 1152;
-	mp3encoder = new lamejs.Mp3Encoder(nChannels, 44100, bitrate);
+	mp3encoder = new lamejs.Mp3Encoder(nChannels, audioBuffer.sampleRate, bitrate);
 	var mp3Data = [];
 
 	var blockIndex = 0;
